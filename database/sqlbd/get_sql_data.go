@@ -95,7 +95,7 @@ func GetFuncionesData(db *sql.DB) []database.Funcion {
 	return data
 }
 
-func GetButacaReservadasData(db *sql.DB) []database.ButacaPorFuncion {
+func GetButacasReservadasData(db *sql.DB) []database.ButacaPorFuncion {
 	var data []database.ButacaPorFuncion
 	query := `select * from butaca_por_funcion where estado = 'comprada'`
 	rows, err := db.Query(query)
