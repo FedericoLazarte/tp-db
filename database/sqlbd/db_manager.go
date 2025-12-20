@@ -14,7 +14,12 @@ import (
 )
 
 func CrearDB() {
-	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=postgres sslmode=disable")
+	connStr := fmt.Sprintf(
+		"user=%s password=%s host=localhost dbname=postgres sslmode=disable",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+	)
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,14 +30,19 @@ func CrearDB() {
 		log.Fatal(err)
 	}
 
-	_, err = db.Exec(`create database cinemmark`)
+	_, err = db.Exec(`create database cinemark`)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func ConectarBD() *sql.DB {
-	db, err := sql.Open("postgres", "user=postgres host=localhost dbname=cinemark sslmode=disable")
+	connStr := fmt.Sprintf(
+		"user=%s password=%s host=localhost dbname=cinemark sslmode=disable",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+	)
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +64,7 @@ func CrearPksFks() {
 func EliminarPksFks() {
 	db := ConectarBD()
 	defer db.Close()
-	ejecutarSql(db, "database/archivosSQL/elimiar_pks_fks.sql")
+	ejecutarSql(db, "database/archivosSQL/eliminar_pks_fks.sql")
 }
 
 func CargarDatos() {
@@ -106,7 +116,7 @@ func CrearSpTriggers() {
 	ejecutarSql(db, "database/archivosSQL/reservar_butacas_sp.sql")
 	ejecutarSql(db, "database/archivosSQL/compra_de_butaca_sp.sql")
 	ejecutarSql(db, "database/archivosSQL/apertura_funcion_sp.sql")
-	ejecutarSql(db, "database/archivosSql/enviar_email.sql")
+	ejecutarSql(db, "database/archivosSQL/enviar_mail.sql")
 }
 
 func IniciarPruebas() {
